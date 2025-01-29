@@ -35,7 +35,6 @@ const Chatroom = () => {
             querySnapshot.forEach((doc) => {
                 setSearchedUserName(prev => [...prev, { username: doc.data().username, uid: doc.data().uid }])
             })
-            
         }
         
     }
@@ -60,12 +59,12 @@ const Chatroom = () => {
                         username: user.username
                     },
                 });
-                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid}});
+                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID}});
                 
             }
             else {
                 alert("chat exists")
-                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid}});
+                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID}});
             }
             
 
@@ -83,6 +82,7 @@ const Chatroom = () => {
             try {
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
+
                     const docData = docSnap.data();
                     if (Object.keys(docData).length === 0) {
                         setNoChat(true);
@@ -138,7 +138,7 @@ const Chatroom = () => {
                     <ul>
                     
                         {chatList && chatList.map((users, index) => (
-                            <li key={users.uid} onClick={() => {chatOnClick(index)}}><span><img src={profile} /></span><span className="username">{users.username}</span></li>
+                            <li key={index} onClick={() => {chatOnClick(index)}}><span><img src={profile} /></span><span className="username">{users.username}</span></li>
                         ))}
                         {noChat === true && <p className="nochat">No chat 🥲</p>}
                     </ul>

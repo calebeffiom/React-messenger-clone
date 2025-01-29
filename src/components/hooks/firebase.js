@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import { getDatabase, ref, set, get,child, update } from "firebase/database";
-import { getFirestore, collection, query, where, doc, setDoc, getDocs, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, doc, setDoc, getDocs, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 
 
@@ -32,4 +32,4 @@ const signInUser = signInWithEmailAndPassword;
 const rdb = getDatabase();
 const fdb = getFirestore(app);
 
-export { rdb, auth, fdb, createUser, signInUser, ref, set, get, child, update, doc, setDoc, collection, query, where, getDocs, getDoc, updateDoc }
+export { rdb, auth, fdb, createUser, signInUser, ref, set, get, child, update, doc, setDoc, collection, query, where, getDocs, getDoc, updateDoc, arrayUnion }
