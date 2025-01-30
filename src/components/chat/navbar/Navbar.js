@@ -13,7 +13,7 @@ const Navbar = (props) => {
                 <div className="navbar-inner">
                     <ul>
                         <li className="back-button" onClick={exit}><FaArrowLeft size={20} color="#fff"/></li>
-                        <li className="profile"><span><img src={profile} /></span><span className="username">{props.friendName}</span></li>
+                        <li className="profile"><span><img src={profile} /></span><span className="username">{props.friendUid !== props.currentUseruid ? props.friendName : props.friendName + " " + "(you)"}</span></li>
                     </ul>
                 </div>
             </div>

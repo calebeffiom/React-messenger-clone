@@ -4,7 +4,8 @@ import { useLocation } from 'react-router-dom';
 import Userinput from "../signup and login/Userinput";
 // import { set, get, child, ref, database } from "../hooks/firebase";
 import { useNavigate } from "react-router-dom";
-import { collection, query, where, fdb, getDocs, doc, setDoc, rdb, set, ref, getDoc, updateDoc } from "../hooks/firebase"
+import LogoutIcon from '@mui/icons-material/Logout';
+import { collection, query, where, fdb, getDocs, doc, setDoc, rdb, set, ref, getDoc, updateDoc, signOut, auth } from "../hooks/firebase"
 import { serverTimestamp } from "firebase/database";
 import React, { useEffect } from 'react';
 const Chatroom = () => {
@@ -50,13 +51,15 @@ const Chatroom = () => {
                 await updateDoc(doc(fdb, "chatRooms", user.uid), {
                     [combinedUID]: {
                         uid: searchedUserName[i].uid,
-                        username: searchedUserName[i].username
+                        username: searchedUserName[i].username,
+                        latestText: ""
                     }
                 });
                 await updateDoc(doc(fdb, "chatRooms", searchedUserName[i].uid), {
                     [combinedUID]: {
                         uid: user.uid,
-                        username: user.username
+                        username: user.username,
+                        latestText: ""
                     },
                 });
                 navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID}});
@@ -104,6 +107,18 @@ const Chatroom = () => {
         }
         fetchData()
     },[chatList])
+
+
+    const logout = async () =>{
+        try{
+            await signOut(auth)
+            navigate("/"); 
+        }
+        catch (err){
+            console.log(err.message)
+        }
+    }
+
     
     const chatOnClick=(i)=>{
         const combinedUID = user.uid > chatList[i].uid ? user.uid + chatList[i].uid : chatList[i].uid + user.uid
@@ -138,11 +153,15 @@ const Chatroom = () => {
                     <ul>
                     
                         {chatList && chatList.map((users, index) => (
-                            <li key={index} onClick={() => {chatOnClick(index)}}><span><img src={profile} /></span><span className="username">{users.username}</span></li>
+                            <li key={index} onClick={() => {chatOnClick(index)}}><span><img src={profile} /></span><span className="username">{users.username}<p className="last-message">{users.latestText}</p></span></li>
+
                         ))}
                         {noChat === true && <p className="nochat">No chat 🥲</p>}
                     </ul>
                 </div>
+            </div>
+            <div className="logout-cont" onClick={logout}>
+                <p>Logout</p> <LogoutIcon className="exitIcon"/>
             </div>
         </div>
     );

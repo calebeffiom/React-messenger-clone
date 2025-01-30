@@ -8,10 +8,13 @@
     /* padding: 0 40px; */
 }
 .greetings-cont{
+    /* display: flex;
+    justify-content: space-between; */
     padding: 40px 40px 60px;
     background-color: rgb(94, 81, 217);
     color: white;
 }
+
 .greetings-cont h2{
     font-family: sans-serif;
     font-weight: 300;
@@ -76,6 +79,11 @@
     text-align: center;
     color: rgb(50, 48, 91);
   }
+  .chat-cont ul{
+    max-height: 330px;
+    overflow-y: scroll;
+    /* background-color: black; */
+  }
   .chat-cont ul li{
     margin: 20px 0;
     display: flex;
@@ -119,4 +127,32 @@
     color: rgb(200, 198, 198);
     font-size: 16px;
 
+  }
+  .last-message{
+    width: 200px;
+    color: rgb(209, 206, 206);
+    margin-top: 1px;
+    font-size: 13px;
+    overflow-x: hidden;
+    white-space: nowrap;
+  }
+  .logout-cont{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(94, 81, 217);
+    height: 50px;
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;    
+  }
+  .logout-cont p{
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: sans-serif;
+  }
+  .exitIcon{
+    color: white;
+    margin-left: 5px;
   }
