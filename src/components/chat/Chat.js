@@ -24,33 +24,20 @@ const Chat = () => {
 
         // console.log(date)
         try {
-            await updateDoc(doc(fdb, "chats", combinedUID), {
-                messages: arrayUnion({
-                    userUid: info.currentUseruid,
-                    userName: info.currentUsername,
-                    message: message,
-                    timeStamp: new Date().toISOString() 
-                })
-            })
+                if(message != ""){
+                    await updateDoc(doc(fdb, "chats", combinedUID), {
+                        messages: arrayUnion({
+                            userUid: info.currentUseruid,
+                            userName: info.currentUsername,
+                            message: message,
+                            timeStamp: new Date().toISOString() 
+                        })
+                    })
+                }
+                else{
+                    alert("cannot send a blank message")
+                }
             setMessage("")
-
-            const docRef = doc(fdb, "chats", combinedUID);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const arrayLastVal = docSnap.data().messages.length - 1;
-                const latestText = docSnap.data().messages[arrayLastVal].message
-                await updateDoc(doc(fdb, "chatRooms", info.currentUseruid), {
-                    [`${combinedUID}.latestText`]: latestText
-                })
-                
-                
-            } else {
-                console.log("No such document!");
-            }
-
-           
-
         }
         catch (err) {
             alert(err.message)
@@ -76,6 +63,20 @@ const Chat = () => {
                         setMessages(usersArray);
                         setNoChat(false);
                     }
+                }
+                const docRef2 = doc(fdb, "chats", combinedUID);
+                const docSnap2 = await getDoc(docRef2);
+    
+                if (docSnap.exists()) {
+                    const arrayLastVal = docSnap2.data().messages.length - 1;
+                    const latestText = docSnap2.data().messages[arrayLastVal].message
+                    await updateDoc(doc(fdb, "chatRooms", info.currentUseruid), {
+                        [`${combinedUID}.latestText`]: latestText
+                    })
+                    
+                    
+                } else {
+                    console.log("No such document!");
                 }
             }
 

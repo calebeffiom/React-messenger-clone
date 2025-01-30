@@ -17,7 +17,7 @@
 .chats-cont{
     /* background-color: black; */
     width: 85%;
-    height: 84vh;
+    height: 80vh;
     overflow: scroll;
     display: flex;
     flex-direction: column;

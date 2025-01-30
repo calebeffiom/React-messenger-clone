@@ -3,6 +3,7 @@ import { auth, createUser, setDoc, fdb, doc} from "../hooks/firebase";
 import { useState } from "react";
 import Userinput from "./Userinput";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const [inputFields, setInputFields] = useState({
     username: "",
@@ -10,6 +11,8 @@ const Signup = () => {
     phonenumber: "",
     password: ""
   });
+  const navigate = useNavigate();
+  
 
   const changeInputs = (e) => {
     const { name, value } = e.target;
@@ -35,6 +38,7 @@ const Signup = () => {
 
 
           alert("Account Created")
+          navigate("/")
 
         })
         .catch((error) => {

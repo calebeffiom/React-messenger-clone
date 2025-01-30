@@ -4,6 +4,8 @@ import {useState} from "react";
 import Userinput from "./Userinput";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+// import { useHistory } from 'react-router-dom';
+
 // import Chatroom from "../chatroom/Chatroom";
 // import Signup from "./Signup";
 const Login = () => {
@@ -31,6 +33,7 @@ const Login = () => {
         const user = userCredential.user;
         user.displayName = inputFields.username;
         alert("Account Found")
+        // navigate('/chatroom', ); 
         navigate("/chatroom", { state: { username: user.displayName, uid: user.uid} }); // Pass user as state
         // window.location = "chatroom"
         
