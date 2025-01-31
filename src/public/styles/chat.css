@@ -15,9 +15,10 @@
     
 }
 .chats-cont{
-    /* background-color: black; */
+    background-color: black;
     width: 85%;
-    height: 76vh;
+    height: fit-content;
+    max-height: 75vh;
     overflow: scroll;
     display: flex;
     flex-direction: column;
