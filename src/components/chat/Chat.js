@@ -64,20 +64,6 @@ const Chat = () => {
                         setNoChat(false);
                     }
                 }
-                const docRef2 = doc(fdb, "chats", combinedUID);
-                const docSnap2 = await getDoc(docRef2);
-    
-                if (docSnap.exists()) {
-                    const arrayLastVal = docSnap2.data().messages.length - 1;
-                    const latestText = docSnap2.data().messages[arrayLastVal].message
-                    await updateDoc(doc(fdb, "chatRooms", info.currentUseruid), {
-                        [`${combinedUID}.latestText`]: latestText
-                    })
-                    
-                    
-                } else {
-                    console.log("No such document!");
-                }
             }
 
             catch (err) {

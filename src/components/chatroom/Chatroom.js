@@ -6,7 +6,7 @@ import Userinput from "../signup and login/Userinput";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, query, where, fdb, getDocs, doc, setDoc, rdb, set, ref, getDoc, updateDoc, signOut, auth } from "../hooks/firebase"
-import { serverTimestamp } from "firebase/database";
+// import { serverTimestamp } from "firebase/database";
 import React, { useEffect } from 'react';
 const Chatroom = () => {
     const [search, setSearch] = useState("")
@@ -27,17 +27,17 @@ const Chatroom = () => {
         const usersRef = collection(fdb, "users");
         const q = query(usersRef, where("username", "==", `${search}`));
         const querySnapshot = await getDocs(q);
-        if(querySnapshot.empty){
+        if (querySnapshot.empty) {
             setUserFound(false)
             // console.log(userFound)
         }
-        else{
+        else {
             setUserFound(true)
             querySnapshot.forEach((doc) => {
                 setSearchedUserName(prev => [...prev, { username: doc.data().username, uid: doc.data().uid }])
             })
         }
-        
+
     }
     const onClick = async (i) => {
         // console.log(searchedUserName[i])
@@ -62,14 +62,14 @@ const Chatroom = () => {
                         latestText: ""
                     },
                 });
-                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID}});
-                
+                navigate("/chat", { state: { uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID } });
+
             }
             else {
                 alert("chat exists")
-                navigate("/chat" ,{state:{uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID}});
+                navigate("/chat", { state: { uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID } });
             }
-            
+
 
 
         }
@@ -79,7 +79,12 @@ const Chatroom = () => {
 
         }
     }
-    useEffect(()=>{
+
+
+
+
+
+    useEffect(() => {
         const fetchData = async () => {
             const docRef = doc(fdb, "chatRooms", user.uid);
             try {
@@ -91,13 +96,31 @@ const Chatroom = () => {
                         setNoChat(true);
                     } else {
                         const usersArray = Object.values(docData);
+                        usersArray.map(async (users, index) => {
+                            const combinedUID = user.uid > users.uid ? user.uid + users.uid : users.uid + user.uid
+                            const docRef2 = doc(fdb, "chats", combinedUID);
+                            const docSnap2 = await getDoc(docRef2);
+                            
+                            if (docSnap.exists()) {
+                                const arrayLastVal = docSnap2.data().messages.length - 1;
+                                const latestText = docSnap2.data().messages[arrayLastVal].message
+                                await updateDoc(doc(fdb, "chatRooms", user.uid), {
+                                    [`${combinedUID}.latestText`]: latestText
+                                })
+
+
+                            } else {
+                                console.log("No such document!");
+                            }
+                        })
+                        // console.log(usersArray)
                         setChatList(usersArray);
                         setNoChat(false);
                     }
-                   
+
                 }
-                
-                else{
+
+                else {
                     setNoChat(true)
                 }
                 // console.log(noChat)
@@ -106,23 +129,23 @@ const Chatroom = () => {
             }
         }
         fetchData()
-    },[chatList])
+    }, [chatList])
 
 
-    const logout = async () =>{
-        try{
+    const logout = async () => {
+        try {
             await signOut(auth)
-            navigate("/"); 
+            navigate("/");
         }
-        catch (err){
+        catch (err) {
             console.log(err.message)
         }
     }
 
-    
-    const chatOnClick=(i)=>{
+
+    const chatOnClick = (i) => {
         const combinedUID = user.uid > chatList[i].uid ? user.uid + chatList[i].uid : chatList[i].uid + user.uid
-        navigate("/chat",{state:{uid: chatList[i].uid, username: chatList[i].username,currentUsername: user.username, currentUseruid: user.uid, combinedUID: combinedUID}})
+        navigate("/chat", { state: { uid: chatList[i].uid, username: chatList[i].username, currentUsername: user.username, currentUseruid: user.uid, combinedUID: combinedUID } })
 
     }
     return (
@@ -151,9 +174,9 @@ const Chatroom = () => {
                 <div className="chat-cont">
                     <h1>Chats</h1>
                     <ul>
-                    
+
                         {chatList && chatList.map((users, index) => (
-                            <li key={index} onClick={() => {chatOnClick(index)}}><span><img src={profile} /></span><span className="username">{users.username}<p className="last-message">{users.latestText}</p></span></li>
+                            <li key={index} onClick={() => { chatOnClick(index) }}><span><img src={profile} /></span><span className="username">{users.username}<p className="last-message">{users.latestText}</p></span></li>
 
                         ))}
                         {noChat === true && <p className="nochat">No chat 🥲</p>}
@@ -161,7 +184,7 @@ const Chatroom = () => {
                 </div>
             </div>
             <div className="logout-cont" onClick={logout}>
-                <p>Logout</p> <LogoutIcon className="exitIcon"/>
+                <p>Logout</p> <LogoutIcon className="exitIcon" />
             </div>
         </div>
     );
