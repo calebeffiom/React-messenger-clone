@@ -176,7 +176,7 @@ const Chatroom = () => {
                     <ul>
 
                         {chatList && chatList.map((users, index) => (
-                            <li key={index} onClick={() => { chatOnClick(index) }}><span><img src={profile} /></span><span className="username">{users.username}<p className="last-message">{users.latestText}</p></span></li>
+                            <li key={index} onClick={() => { chatOnClick(index) }}><span><img src={profile} /></span><span className="username">{users.uid !== user.uid ? users.username : users.username + " " + "(you)"}<p className="last-message">{users.latestText}</p></span></li>
 
                         ))}
                         {noChat === true && <p className="nochat">No chat 🥲</p>}

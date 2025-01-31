@@ -18,7 +18,7 @@
     /* background-color: black; */
     width: 85%;
     height: fit-content;
-    max-height: 80vh;
+    max-height: 60vh;
     overflow: scroll;
     display: flex;
     flex-direction: column;
