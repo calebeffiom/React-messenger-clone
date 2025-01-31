@@ -15,10 +15,10 @@
     
 }
 .chats-cont{
-    background-color: black;
+    /* background-color: black; */
     width: 85%;
     height: fit-content;
-    max-height: 75vh;
+    max-height: 60vh;
     overflow: scroll;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,6 @@
 .chats-cont::-webkit-scrollbar {
     display: none; /* Hide the scrollbar */
   }
-
 .sent{
     width: fit-content;
     max-width: 60%;
