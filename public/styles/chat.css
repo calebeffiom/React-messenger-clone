@@ -4,7 +4,7 @@
 }
 .container{
     position: absolute;
-    height: 84vh;
+    max-height: 100vh;
     width: 100%;
     /* background-color: aqua; */
     margin-bottom: 60px;
