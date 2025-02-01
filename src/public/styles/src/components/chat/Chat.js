@@ -84,6 +84,7 @@ const Chat = () => {
     return (
         <div className="container">
             <Navbar friendName={info.username} friendUid={info.uid} currentUsername={info.currentUsername} currentUseruid={info.currentUseruid} />
+            
             <div className="chats-cont">
                 {
                     messages && messages.map((chat, index) =>{ 
