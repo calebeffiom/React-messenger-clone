@@ -18,7 +18,7 @@
     /* background-color: black; */
     width: 85%;
     height: fit-content;
-    max-height: 60vh;
+    max-height: 84vh;
     overflow: scroll;
     display: flex;
     flex-direction: column;
@@ -30,6 +30,19 @@
 .chats-cont::-webkit-scrollbar {
     display: none; /* Hide the scrollbar */
   }
+@media (max-height: 680px) {
+    .chats-cont{
+        max-height: 79vh;
+    }
+}
+@media (max-height: 485px) {
+    .chats-cont{
+        max-height: 74vh;
+    }
+    /* .container{
+        max-height: ;
+    } */
+}
 .sent{
     width: fit-content;
     max-width: 60%;
