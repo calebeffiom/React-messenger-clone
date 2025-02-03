@@ -126,7 +126,7 @@
 .chat-container{
     width: 100%;
     position: fixed;
-    bottom: 0;
+    top: 0;
     background-color: rgb(94, 81, 217);
     padding: 5px 0;
 }
