@@ -81,7 +81,8 @@
     width: 100%;
     background-color: rgb(94, 81, 217);
     padding: 5px 0;
-   
+    position: sticky;
+    top: 0;
 }
 .navbar-inner{
     width: 90%;
@@ -120,6 +121,9 @@
     width: 100%;
     background-color: rgb(94, 81, 217);
     padding: 5px 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
 }
 .chat-inner{
     width: 90%;

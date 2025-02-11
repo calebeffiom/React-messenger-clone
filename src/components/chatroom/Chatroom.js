@@ -169,7 +169,7 @@ const Chatroom = () => {
     return (
         <div className="chatroom-cont">
             <div className="greetings-cont">
-                <div className="user-image-cont"><img src={profile} /><span className="edit-icon"><EditIcon fontSize="4px" className="editicon-colour"/></span></div>
+                <div className="user-image-cont"><img src={profile} /><span className="edit-icon"><EditIcon fontSize="8px" className="editicon-colour"/></span></div>
                 {user.username != null ? <h2>Hi {user.username}</h2> : <h2>Hi</h2>}
                 <h1>Welcome Back!</h1>
             </div>
