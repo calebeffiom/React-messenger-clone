@@ -5,6 +5,7 @@ import Userinput from "../signup and login/Userinput";
 // import { set, get, child, ref, database } from "../hooks/firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
+import EditIcon from '@mui/icons-material/Edit';
 import { collection, query, where, fdb, getDocs, doc, setDoc, rdb, set, ref, getDoc, updateDoc, signOut, auth } from "../hooks/firebase"
 // import { serverTimestamp } from "firebase/database";
 import React, { useEffect } from 'react';
@@ -16,12 +17,13 @@ const Chatroom = () => {
     const [noChat, setNoChat] = useState(true)
     const [chatList, setChatList] = useState(null)
     const [userFound, setUserFound] = useState(null)
+    const[unread, setUnread] = useState(false)
     const navigate = useNavigate();
     const onChange = (e) => {
         const search = e.target.value;
         setSearch(search)
     }
-
+// this is to search for a particular user
     const searchUser = async () => {
         setSearchedUserName([]);
         const usersRef = collection(fdb, "users");
@@ -39,6 +41,8 @@ const Chatroom = () => {
         }
 
     }
+
+    // this is to check if a particular user already has a chat open with someone. If he does it will just open the chat up else it creates a new chat and navigates to their chat space
     const onClick = async (i) => {
         // console.log(searchedUserName[i])
         const combinedUID = user.uid > searchedUserName[i].uid ? user.uid + searchedUserName[i].uid : searchedUserName[i].uid + user.uid
@@ -62,6 +66,7 @@ const Chatroom = () => {
                         latestText: ""
                     },
                 });
+                
                 navigate("/chat", { state: { uid: searchedUserName[i].uid, username: searchedUserName[i].username, currentUsername: user.username, currentUseruid: user.uid, chat: combinedUID } });
 
             }
@@ -80,12 +85,24 @@ const Chatroom = () => {
         }
     }
 
+    // const checkUnreadMesasge = (i, lastMessageuid) =>{
+    //     // console.log(lastMessageuid)
+    //     if(chatList[i].uid === lastMessageuid){
+    //         // console.log(i.uid)
+    //         setUnread(true)
+    //     }
+    //     else{
+    //         setUnread(false)
+    //     }
+    //     return(i, lastMessageuid)
+    // }
 
 
 
-
+// this is to update the chats opened 
     useEffect(() => {
         const fetchData = async () => {
+            // this is to get the chats created
             const docRef = doc(fdb, "chatRooms", user.uid);
             try {
                 const docSnap = await getDoc(docRef);
@@ -94,20 +111,21 @@ const Chatroom = () => {
                     const docData = docSnap.data();
                     if (Object.keys(docData).length === 0) {
                         setNoChat(true);
-                    } else {
+                    } 
+                    else {
+                        // this is to check for the lastmessages dropped in each others dms
                         const usersArray = Object.values(docData);
                         usersArray.map(async (users, index) => {
                             const combinedUID = user.uid > users.uid ? user.uid + users.uid : users.uid + user.uid
                             const docRef2 = doc(fdb, "chats", combinedUID);
                             const docSnap2 = await getDoc(docRef2);
                             
-                            if (docSnap.exists()) {
+                            if (docSnap2.exists()) {
                                 const arrayLastVal = docSnap2.data().messages.length - 1;
                                 const latestText = docSnap2.data().messages[arrayLastVal].message
                                 await updateDoc(doc(fdb, "chatRooms", user.uid), {
                                     [`${combinedUID}.latestText`]: latestText
-                                })
-
+                                });
 
                             } else {
                                 console.log("No such document!");
@@ -129,7 +147,7 @@ const Chatroom = () => {
             }
         }
         fetchData()
-    }, [chatList])
+    }, [chatList, unread])
 
 
     const logout = async () => {
@@ -151,6 +169,7 @@ const Chatroom = () => {
     return (
         <div className="chatroom-cont">
             <div className="greetings-cont">
+                <div className="user-image-cont"><img src={profile} /><span className="edit-icon"><EditIcon fontSize="4px" className="editicon-colour"/></span></div>
                 {user.username != null ? <h2>Hi {user.username}</h2> : <h2>Hi</h2>}
                 <h1>Welcome Back!</h1>
             </div>
@@ -176,7 +195,11 @@ const Chatroom = () => {
                     <ul>
 
                         {chatList && chatList.map((users, index) => (
-                            <li key={index} onClick={() => { chatOnClick(index) }}><span><img src={profile} /></span><span className="username">{users.uid !== user.uid ? users.username : users.username + " " + "(you)"}<p className="last-message">{users.latestText}</p></span></li>
+                            <li key={index} onClick={() => { chatOnClick(index) }}>
+                                {
+                                    unread === true && <span className="unread"></span>
+                            }
+                            <span><img src={profile} /></span><span className="username">{users.uid !== user.uid ? users.username : users.username + " " + "(you)"}<p className="last-message">{users.latestText}</p></span></li>
 
                         ))}
                         {noChat === true && <p className="nochat">No chat 🥲</p>}
