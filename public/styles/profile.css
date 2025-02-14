@@ -16,6 +16,8 @@
 }
 .profile-name-photo-cont span img{
     width: 60px;
+    height: 60px;
+    border-radius: 100%;
 }
 .profile-name-photo-cont span p{
     font-family: sans-serif;
@@ -27,6 +29,7 @@
 }
 .image-span{
     display: block;
+    
 }
 .guide-text-span{
     display: block;

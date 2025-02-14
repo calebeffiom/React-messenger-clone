@@ -32,9 +32,11 @@ const Signup = () => {
             username: inputFields.username,
             email: inputFields.email,
             phonenumber: inputFields.phonenumber,
+            bio: "",
+            imageURL: "",
             // password: inputFields.password
           });
-          await setDoc(doc(fdb,"chatRooms",user.uid),{})
+          await setDoc(doc(fdb,"chatRooms",user.uid))
 
 
           alert("Account Created")

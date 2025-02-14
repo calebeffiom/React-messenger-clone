@@ -11,8 +11,11 @@ const Profile = () => {
     const navigate = useNavigate();
     const [profileInfo, setProfileInfo] = useState({
         phonenumber: "",
-        bio: ""
+        bio: "",
     });
+    const [imageURL, setImageURL] = useState("")
+
+
 
     useEffect (()=>{
         const fetchData = async () => {
@@ -21,9 +24,18 @@ const Profile = () => {
                 const docSnap = await getDoc(docRef);
                 if(docSnap.exists()){
                     const docData = docSnap.data()
+                   setImageURL(docData.imageURL)
                     setProfileInfo({
                         phonenumber: docData.phonenumber,
-                        bio: "some text"
+                        bio: docData.bio,
+                })
+                }
+                else{
+                    setImageURL("")
+                    setProfileInfo({
+                        phonenumber: "",
+                        bio: "",
+                        
                 })
                 }
             }
@@ -34,15 +46,81 @@ const Profile = () => {
         fetchData()
     },[])
 
+
+
+
     const exit=()=>{
-        navigate("/chatroom", {state:{username:userProfile.username, uid: userProfile.useruid}})
+        navigate("/chatroom", {state:{username: userProfile.username, uid: userProfile.useruid, image: imageURL}})
     }
+
+
+
+
+
     const changeProfileInfo = (e) =>{
-        const {name, value} = e.target
+        const {name, value, files} = e.target
         setProfileInfo((prev)=>({
             ...prev,
             [name]: value,
         }))
+    }
+
+
+    const handleImageUpload = async (e) =>{
+        const file = e.target.files[0]
+        if(!file) return;
+        const apiKey = "95bcc86d4aeffff6669ed0857ebd21d1";
+        const formData = new FormData();
+        formData.append("action", "upload");
+        formData.append("format", "json");
+        formData.append("image", file);
+        formData.append("key", apiKey); 
+
+        try {
+            const response = await fetch("https://api.imgbb.com/1/upload", {
+              method: "POST",
+              body: formData,
+            //   mode: "no-cors"
+            });
+           
+            const data = await response.json();
+            // console.log(data.data.image.url)
+            if (data.success) {
+            const imageUrl = data.data.image.url
+              setImageURL(imageUrl);
+            //   await updateDoc(doc(fdb, "users", userProfile.useruid), {
+            //     imageURL: imageUrl,
+            // });
+            console.log("done uploading")
+               // Get the direct image URL
+            } else {
+              console.error("Upload failed:", data.error.message);
+            }
+          } catch (error) {
+            console.error("Error uploading image:", error.message);
+          }
+
+    }
+
+
+    const submitEdittedProfile = async () =>{
+        
+        try{
+            if(imageURL != "" || profileInfo.phonenumber != "" || profileInfo.bio != ""){
+                await updateDoc(doc(fdb, "users", userProfile.useruid),{
+                    imageURL: imageURL,
+                    phonenumber: profileInfo.phonenumber,
+                    bio: profileInfo.bio
+                })
+                alert("profile editted")
+            }
+            else{
+                alert("edit all profile details")
+            }
+        }
+        catch(err){
+            console.log(err.message)
+        }
     }
 
 
@@ -61,10 +139,10 @@ const Profile = () => {
 
             <div className="profile-name-photo-cont">
                 <div className="profile-photo-cont">
-                    <span className="image-span"><img src={profile} /></span> <span className="guide-text-span"><p>Edit your dipslay photo and your username</p></span>
+                    <span className="image-span"><img src={imageURL !== "" ? imageURL : profile } /></span> <span className="guide-text-span"><p>Edit your dipslay photo and your username</p></span>
                 </div>
                 <div className="profile-edit-input-cont">
-                    <input style={{ display: "none" }} type="file" id="edit" />
+                    <input style={{ display: "none" }} type="file" id="edit" onChange={handleImageUpload}/>
                     <label htmlFor="edit">
                         Edit
                     </label>
@@ -80,14 +158,14 @@ const Profile = () => {
             <div className="profile-number">
                 <h2>Phone Number</h2>
                 {/* <span>{phoneNumber}</span> */}
-                <input value={profileInfo.phonenumber} type="text" name="phonenumber" onChange={changeProfileInfo}/>
+                <input value={profileInfo.phonenumber} type="text" name="phonenumber" placeholder="Enter Number" onChange={changeProfileInfo}/>
             </div>
             <div className="profile-bio">
                 <h2>About</h2>
                 <textarea type="text" name="bio" placeholder="Enter Bio" value={profileInfo.bio} onChange={changeProfileInfo}></textarea>
             </div>
             <div className="profile-save-btn">
-                <button>Save</button>
+                <button onClick={submitEdittedProfile}>Save</button>
             </div>
         </div>
     )

@@ -4,6 +4,7 @@ import {useState} from "react";
 import Userinput from "./Userinput";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+import { collection, query, where, fdb, getDocs, doc, setDoc, rdb, set, ref, getDoc, updateDoc, signOut} from "../hooks/firebase"
 // import { useHistory } from 'react-router-dom';
 
 // import Chatroom from "../chatroom/Chatroom";
@@ -25,16 +26,30 @@ const Login = () => {
     }));
   }
 
-  const login=()=>{
+  const login = async () => {
     if (inputFields.username && inputFields.password && inputFields.email) {
       signInUser(auth, inputFields.email, inputFields.password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in 
         const user = userCredential.user;
         user.displayName = inputFields.username;
+        let image;
         alert("Account Found")
+
+        const docRef = doc(fdb, "users", user.uid);
+        try {
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const docData = docSnap.data();
+            image = docData.imageURL
+
+          }
+        } catch (error) {
+          alert(error.message)
+        }
+        // console.log(image)
         // navigate('/chatroom', ); 
-        navigate("/chatroom", { state: { username: user.displayName, uid: user.uid} }); // Pass user as state
+        navigate("/chatroom", { state: { username: user.displayName, uid: user.uid, image: image} }); // Pass user as state
         // window.location = "chatroom"
         
         // ...
