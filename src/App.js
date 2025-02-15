@@ -9,16 +9,16 @@ import FriendInfo from "./components/friendinfo/FriendInfo";
 export default function App() {
   return (
     <div className="App">
-        <FriendInfo/>
-      {/* <BrowserRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="signup" element={<Signup />} />
           <Route path="chatroom" element={<Chatroom />} />
           <Route path="chat" element={<Chat />} />
           <Route path="profile" element={ <Profile/>}/>
+          <Route path="friendinfo" element={ <FriendInfo/>}/>
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>
     </div>
   );
 }

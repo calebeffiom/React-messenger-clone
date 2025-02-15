@@ -83,7 +83,7 @@ const Chat = () => {
 
     return (
         <div className="container">
-            <Navbar friendName={info.username} friendUid={info.uid} friendImage={info.image} currentUsername={info.currentUsername} currentUseruid={info.currentUseruid} currentUserImage={info.currentUserImage} />
+            <Navbar friendName={info.username} friendUid={info.uid} friendImage={info.image} currentUsername={info.currentUsername} currentUseruid={info.currentUseruid} currentUserImage={info.currentUserImage} combinedUID={info.combinedUID}/>
             
             <div className="chats-cont">
                 {
