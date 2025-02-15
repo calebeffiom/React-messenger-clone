@@ -50,7 +50,7 @@ const Profile = () => {
 
 
     const exit=()=>{
-        navigate("/chatroom", {state:{username: userProfile.username, uid: userProfile.useruid, image: imageURL}})
+        navigate("/chatroom", {state:{username: userProfile.username, uid: userProfile.useruid, image: userProfile.userimage}})
     }
 
 

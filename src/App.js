@@ -5,10 +5,12 @@ import Chatroom from "./components/chatroom/Chatroom";
 import Chat from "./components/chat/Chat";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Profile from "./components/profile/Profile";
+import FriendInfo from "./components/friendinfo/FriendInfo";
 export default function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+        <FriendInfo/>
+      {/* <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="signup" element={<Signup />} />
@@ -16,7 +18,7 @@ export default function App() {
           <Route path="chat" element={<Chat />} />
           <Route path="profile" element={ <Profile/>}/>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }
