@@ -24,33 +24,20 @@ const Chat = () => {
 
         // console.log(date)
         try {
-            await updateDoc(doc(fdb, "chats", combinedUID), {
-                messages: arrayUnion({
-                    userUid: info.currentUseruid,
-                    userName: info.currentUsername,
-                    message: message,
-                    timeStamp: new Date().toISOString() 
-                })
-            })
+                if(message != ""){
+                    await updateDoc(doc(fdb, "chats", combinedUID), {
+                        messages: arrayUnion({
+                            userUid: info.currentUseruid,
+                            userName: info.currentUsername,
+                            message: message,
+                            timeStamp: new Date().toISOString() 
+                        })
+                    })
+                }
+                else{
+                    alert("cannot send a blank message")
+                }
             setMessage("")
-
-            const docRef = doc(fdb, "chats", combinedUID);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const arrayLastVal = docSnap.data().messages.length - 1;
-                const latestText = docSnap.data().messages[arrayLastVal].message
-                await updateDoc(doc(fdb, "chatRooms", info.currentUseruid), {
-                    [`${combinedUID}.latestText`]: latestText
-                })
-                
-                
-            } else {
-                console.log("No such document!");
-            }
-
-           
-
         }
         catch (err) {
             alert(err.message)
@@ -96,7 +83,8 @@ const Chat = () => {
 
     return (
         <div className="container">
-            <Navbar friendName={info.username} friendUid={info.uid} currentUsername={info.currentUsername} currentUseruid={info.currentUseruid} />
+            <Navbar friendName={info.username} friendUid={info.uid} friendImage={info.image} currentUsername={info.currentUsername} currentUseruid={info.currentUseruid} currentUserImage={info.currentUserImage} combinedUID={info.combinedUID}/>
+            
             <div className="chats-cont">
                 {
                     messages && messages.map((chat, index) =>{ 

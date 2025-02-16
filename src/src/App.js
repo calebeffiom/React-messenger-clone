@@ -4,6 +4,8 @@ import Signup from "./components/signup and login/Signup";
 import Chatroom from "./components/chatroom/Chatroom";
 import Chat from "./components/chat/Chat";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Profile from "./components/profile/Profile";
+import FriendInfo from "./components/friendinfo/FriendInfo";
 export default function App() {
   return (
     <div className="App">
@@ -13,6 +15,8 @@ export default function App() {
           <Route path="signup" element={<Signup />} />
           <Route path="chatroom" element={<Chatroom />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="profile" element={ <Profile/>}/>
+          <Route path="friendinfo" element={ <FriendInfo/>}/>
         </Routes>
       </BrowserRouter>
     </div>

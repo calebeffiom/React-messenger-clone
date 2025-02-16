@@ -7,19 +7,51 @@
     /* background-color: aquamarine; */
     /* padding: 0 40px; */
 }
+
+
+
 .greetings-cont{
     /* display: flex;
     justify-content: space-between; */
-    padding: 40px 40px 60px;
+    padding: 40px 0 60px 40px;
     background-color: rgb(94, 81, 217);
     color: white;
 }
+.user-image-cont{
+  width: 100%;
+  display: flex;
+  margin-bottom: 10x;
+}
+.user-image-cont img{
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+}
+.user-image-cont .edit-icon{
+  display: flex;
+  padding: 4px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 100%;
+  background-color: white;
+  position: relative;
+  top: 2em;
+  right: 1em;
+}
+.editicon-colour{
+  color: rgb(94, 81, 217);
+}
+
+
+
 
 .greetings-cont h2{
     font-family: sans-serif;
     font-weight: 300;
     font-size: 20px;
-    margin-bottom: 10px;
+    margin-top: 12px;
+    margin-bottom: 2px;
 }
 .greetings-cont h1{
     font-family: sans-serif;
@@ -27,6 +59,7 @@
     /* font-weight: 300; */
     font-size: 35px;
 }
+
 .search-cont{
     padding: 25px 50px;
     position: relative;
@@ -82,6 +115,7 @@
   .chat-cont ul{
     max-height: 330px;
     overflow-y: scroll;
+    /* background-color: aqua; */
     /* background-color: black; */
   }
   .chat-cont ul li{
@@ -93,6 +127,8 @@
   }
   .chat-cont ul li span img{
     width: 50px;
+    height: 50px;
+    border-radius: 100%;
   }
   .chat-cont ul li .username{
     font-family: sans-serif;
@@ -108,6 +144,8 @@
   }
   .searched-contact img{
     width: 50px;
+    height: 50px;
+    border-radius: 100%;
   }
   .searched-contact .username{
     font-family: sans-serif;
@@ -155,4 +193,11 @@
   .exitIcon{
     color: white;
     margin-left: 5px;
+  }
+  .unread{
+    width: 8px;
+    height: 8px;
+    border-radius: 100%;
+    background-color:  rgb(94, 81, 217);
+    display: block;
   }
