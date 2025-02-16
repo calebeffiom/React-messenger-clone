@@ -50,7 +50,7 @@ const Profile = () => {
 
 
     const exit=()=>{
-        navigate("/chatroom", {state:{username: userProfile.username, uid: userProfile.useruid, image: userProfile.userimage}})
+        navigate("/chatroom", {state:{username: userProfile.username, uid: userProfile.useruid, image: imageURL}})
     }
 
 
@@ -86,12 +86,16 @@ const Profile = () => {
             const data = await response.json();
             // console.log(data.data.image.url)
             if (data.success) {
-            const imageUrl = data.data.image.url
-              setImageURL(imageUrl);
+            const imageUrl = await data.data.image.url
+            alert("Uploading image")
+            setImageURL(imageUrl);
+            alert("Image uploaded")
+
+            //   console.log(imageURL)
             //   await updateDoc(doc(fdb, "users", userProfile.useruid), {
             //     imageURL: imageUrl,
             // });
-            console.log("done uploading")
+            // console.log("done uploading")
                // Get the direct image URL
             } else {
               console.error("Upload failed:", data.error.message);
@@ -115,7 +119,7 @@ const Profile = () => {
                 alert("profile editted")
             }
             else{
-                alert("edit all profile details")
+                alert("profile edit failed")
             }
         }
         catch(err){

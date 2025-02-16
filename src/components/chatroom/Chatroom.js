@@ -18,6 +18,7 @@ const Chatroom = () => {
     const [chatList, setChatList] = useState(null)
     const [userFound, setUserFound] = useState(null)
     const [unread, setUnread] = useState(false)
+    // const [userImage, setUserImage] = useState("")
     const navigate = useNavigate();
     const onChange = (e) => {
         const search = e.target.value;
@@ -143,6 +144,21 @@ const Chatroom = () => {
                             } else {
                                 console.log("No such document!");
                             }
+
+                            const docRef3 = doc(fdb, "users", users.uid);
+                            const docSnap3 = await getDoc(docRef3);
+                            if(docSnap3.exists()){
+                                const imageUrl = docSnap3.data().imageURL
+                                // console.log(imageUrl)
+                                await updateDoc(doc(fdb, "chatRooms", user.uid),{
+                                    [`${combinedUID}.imageURL`]: imageUrl
+                                })
+                            }
+                            else{
+                                console.log("can't find data")
+                            }
+
+
                         })
                         // console.log(usersArray)
                         setChatList(usersArray);
